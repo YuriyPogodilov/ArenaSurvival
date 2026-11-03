@@ -1,0 +1,49 @@
+{
+	"folders": [
+		{ "path": "." }
+	],
+	"settings" : {
+		"cmake.buildDirectory": "${workspaceFolder}/build",
+		"cmake.configureOnOpen": true,
+		"cmake.generator": "Visual Studio 17 2022",
+		"cmake.buildType": "Debug",
+		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "CMake: configure",
+				"type": "process",
+				"command": "cmake",
+				"args": ["-S", "${workspaceFolder}", "-B", "${workspaceFolder}/build"],
+				"problemMatcher": []
+			},
+			{
+				"label": "CMake: build Debug",
+				"type": "process",
+				"command": "cmake",
+				"args": ["--build", "${workspaceFolder}/build", "--config", "Debug", "--target", "ArenaSurvival"],
+				"dependsOn": "CMake: configure",
+				"problemMatcher": ["$msCompile"],
+				"group": { "kind": "build", "isDefault": true }
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Debug ArenaSurvival",
+				"type": "cppvsdbg",
+				"request": "launch",
+				"program": "${workspaceFolder}/build/Debug/ArenaSurvival.exe",
+				"args": [],
+				"cwd":"${workspaceFolder}",
+				"console": "integratedTerminal",
+				"preLaunchTask": "CMake: build Debug"
+			}
+		],
+		"compounds": []
+	}
+}
