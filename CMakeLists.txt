@@ -1,18 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 
-project(ArenaSurvival LANGUAGES CXX)
+project(ArenaSurvival LANGUAGES C CXX)
 
-add_library(raylib STATIC IMPORTED GLOBAL)
-set_target_properties(raylib PROPERTIES 
-	IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/libs/raylib-6.2/lib/raylib.lib
-)
-set_property(TARGET raylib APPEND PROPERTY INTERFACE_LINK_LIBRARIES winmm)
+set(BUILD_EXAMPLES OFF CACHE BOOL "Build raylib examples" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
+add_subdirectory(libs/raylib)
 
 add_executable(ArenaSurvival src/main.cpp)
-
-target_include_directories(ArenaSurvival PRIVATE 
-	${CMAKE_CURRENT_SOURCE_DIR}/libs/raylib-6.2/include
-)
 
 target_link_libraries(ArenaSurvival PRIVATE raylib)
 
