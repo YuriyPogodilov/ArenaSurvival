@@ -7,7 +7,9 @@
 		"cmake.configureOnOpen": true,
 		"cmake.generator": "Visual Studio 17 2022",
 		"cmake.buildType": "Debug",
-		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+		"C_Cpp.default.includePath": ["${workspaceFolder}/libs/raylib/src"],
+		"C_Cpp.default.mergeConfigurations": true
 	},
 	"tasks": {
 		"version": "2.0.0",
