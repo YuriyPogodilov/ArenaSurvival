@@ -1,0 +1,32 @@
+#!/bin/bash
+# Check staged content, preserving partially staged working files.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+files=$(mktemp)
+trap 'rm -f "$files"' EXIT
+git diff --cached --name-only --diff-filter=ACMR -z -- \
+    'src/*.cpp' 'src/*.h' 'src/*.hpp' > "$files"
+[ -s "$files" ] || exit 0
+
+formatter=${CLANG_FORMAT:-clang-format}
+if ! command -v "$formatter" >/dev/null 2>&1; then
+    # Visual Studio's bundled LLVM is not normally on PATH.
+    vswhere='/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe'
+    if [ -z "${CLANG_FORMAT:-}" ] && [ -x "$vswhere" ]; then
+        formatter=$("$vswhere" -products '*' -find 'VC\Tools\Llvm\bin\clang-format.exe' | tr -d '\r' | head -n 1)
+    fi
+fi
+if ! command -v "$formatter" >/dev/null 2>&1; then
+    echo 'clang-format is required. Install LLVM or set CLANG_FORMAT to its executable.' >&2
+    exit 1
+fi
+
+failed=0
+while IFS= read -r -d '' file; do
+    if ! git show ":$file" | "$formatter" --style=file --assume-filename="$file" --dry-run --Werror; then
+        echo "Formatting check failed: $file. Format it in VS Code, save, and stage it again." >&2
+        failed=1
+    fi
+done < "$files"
+exit "$failed"

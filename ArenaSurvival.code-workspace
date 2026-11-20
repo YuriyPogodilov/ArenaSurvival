@@ -9,7 +9,17 @@
 		"cmake.buildType": "Debug",
 		"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
 		"C_Cpp.default.includePath": ["${workspaceFolder}/libs/raylib/src"],
-		"C_Cpp.default.mergeConfigurations": true
+		"C_Cpp.default.mergeConfigurations": true,
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4,
+		"editor.detectIndentation": false,
+		"C_Cpp.formatting": "clangFormat",
+		"C_Cpp.clang_format_style": "file",
+		"[cpp]": {
+			"editor.defaultFormatter": "ms-vscode.cpptools",
+			"editor.formatOnSave": true
+		}
+
 	},
 	"tasks": {
 		"version": "2.0.0",
